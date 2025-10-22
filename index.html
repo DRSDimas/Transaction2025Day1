@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction HMSaIG 2025 Yogyakarta-Jakarta-Bandung</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+
+    <script src="https://unpkg.com/leaflet.animatedmarker@1.0.0/src/AnimatedMarker.js"></script>
+
+    <style>
+        body { margin: 0; }
+        #map { height: 100vh; width: 100%; }
+
+        .map-title {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: white;
+            padding: 6px 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div class="map-title">
+        Baseline Map of Transaction HMSaIG 2025 Day-1
+    </div>
+
+    <script>
+        const map = L.map('map').setView([-6.9, 108.5], 7); 
+
+
+        L.tileLayer('https://api.maptiler.com/maps/toner-v2/{z}/{x}/{y}.png?key=xfcrXKfMNocHqLR21b3x', {
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+        }).addTo(map);
+
+
+        const pathStyle = {
+            color: '#ff1500',  
+            weight: 5,         
+            opacity: 0.9       
+        };
+
+        const kmlLayer = omnivore.kml('Transaction_tracking.kml', null, L.geoJson(null, {
+                style: pathStyle
+            }))
+            .on('ready', function() {
+                map.fitBounds(kmlLayer.getBounds());
+                const layers = kmlLayer.getLayers();
+                if (layers.length > 0 && layers[0].getLatLngs) {
+                    const latlngs = layers[0].getLatLngs();
+                    const carIcon = L.icon({
+                        iconUrl: 'bus.png',
+                        iconSize: [64, 64],
+                        iconAnchor: [16, 16]
+                    });
+                    const animatedMarker = L.animatedMarker(latlngs, {
+                        icon: carIcon,
+                        distance: 1000,
+                        interval: 1,
+                        autostart: true,
+                        onEnd: function() {
+                            alert('Day 1 Transaction Completed!!');
+                        }
+                    });
+                    map.addLayer(animatedMarker);
+                }
+            })
+            .addTo(map);
+    </script>
+
+</body>
+</html>
