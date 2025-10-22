@@ -29,7 +29,15 @@
             font-size: 30px;
             font-weight: bold;
         }
-
+ 
+        .qr-widget {
+            position: absolute;
+            top: 75px;
+            right: 10px;  
+            z-index: 1000;
+            display: flex;         
+            align-items: center;   
+        }
     </style>
 </head>
 <body>
@@ -38,6 +46,10 @@
 
     <div class="map-title">
         Baseline Map of Transaction HMSaIG 2025 Day-1
+    </div>
+
+    <div class="qr-widget">
+        <img src="GithubQR.png" alt="QR Code to Map" width="100">
     </div>
 
     <script>
